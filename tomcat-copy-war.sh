@@ -1,4 +1,4 @@
-mv target/myweb*.war target/myweb.war
+# mv target/webapp*.war target/webapp.war
 
 # stop tomcat
 
@@ -6,7 +6,7 @@ ssh ec2-user@172.31.4.187 /opt/tomcat8/bin/shutdown.sh
 
 # copy war to tomcat
 
-scp target/myweb.war ec2-user@172.31.4.187:/opt/tomcat/webapps/
+scp target/webapp.war ec2-user@172.31.4.187:/opt/tomcat8/webapps/
 
 # start tomcat
 
