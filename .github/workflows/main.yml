@@ -21,7 +21,7 @@ jobs:
         # Path to the local folder you want to copy.
         local: target/webapp.war
         # Path on the remote server to copy to.
-        remote: /opt/tomcat8/webapps/
+        remote: /opt/tomcat8/webapps/hari.war
         # Number of concurrent file transfers.
         host: 13.232.216.31
         # Username for authentication.
