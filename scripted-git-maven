@@ -1,0 +1,13 @@
+node{
+	stage('SCM Checkout'){
+	  	git credentialsId: 'javahometech', 
+			url: 'https://github.com/javahometech/7am-web-2019-oct',
+			branch: 'master'
+	}
+	
+	stage('maven build'){
+		def mvnHome = tool name: 'maven3', type: 'maven'
+		sh "${mvnHome}/bin/mvn clean package"
+	}
+}
+
