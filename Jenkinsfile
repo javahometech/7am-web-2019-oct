@@ -13,6 +13,7 @@ pipeline{
         stage('Deploy Dev'){
             steps{
                 sshagent(['tomcat-dev']) {
+                    sh "chmod +x ./deploy.sh"
                     sh "./deploy.sh"
                 }
             }
