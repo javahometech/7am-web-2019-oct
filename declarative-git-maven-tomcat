@@ -10,9 +10,12 @@ pipeline{
             }
         }
 
-        stage('Nexus Upload'){
+        stage('Deploy Dev'){
             steps{
-		        sh "mvn deploy"
+                sshagent(['tomcat-dev']) {
+                    sh "chmod +x ./deploy.sh"
+                    sh "./deploy.sh"
+                }
             }
         }
     }
