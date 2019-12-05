@@ -1,0 +1,15 @@
+---
+- hosts: tomcat
+  tasks:
+    - name: install lxml
+      pip:
+        name: lxml
+        state: present
+    - name: download war from nexus and put it on tomcat
+      maven_artifact:
+        group_id: in.javahome
+        artifact_id: webapp
+        repository_url: 'http://172.31.36.207:8081/repository/maven-releases/'
+        username: admin
+        password: javahome
+        dest: /opt/tomcat8/webapps/webapp.war

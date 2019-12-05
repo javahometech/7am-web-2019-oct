@@ -15,5 +15,12 @@ pipeline{
 		        sh "mvn deploy"
             }
         }
+
+        stage('Deploy Dev'){
+            steps{
+		        sh "ansible-plybook -i dev.inv tomcat-deploy.yml"
+            }
+        }
+        
     }
 }
