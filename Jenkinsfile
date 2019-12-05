@@ -1,18 +1,15 @@
 pipeline{
-    agent any
-    environment {
-        PATH = "${PATH}:${tool name: 'maven3', type: 'maven'}/bin"
+    parameters {
+        string defaultValue: 'Hari', description: 'Choose name', name: 'name', trim: false
+        choice choices: ['Banglore', 'Pune', 'Delhi', 'Noida'], description: 'Choose your location', name: 'locatioion'
     }
-    stages{
-        stage('Maven Build'){
-            steps{
-		        sh "mvn clean package"
-            }
-        }
 
-        stage('Nexus Upload'){
+    agent any
+    stages{
+        stage('Hello'){
             steps{
-		        sh "mvn deploy"
+                echo "Your name is ${params.name}"
+                echo "Your location is ${params.locatioion}"
             }
         }
     }
