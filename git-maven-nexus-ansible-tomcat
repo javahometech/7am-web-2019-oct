@@ -18,7 +18,10 @@ pipeline{
 
         stage('Deploy Dev'){
             steps{
-		        sh "ansible-playbook -i dev.inv tomcat-deploy.yml"
+                // change dir to ansible and run command
+                dir('ansible') {
+                    sh "ansible-playbook -i dev.inv tomcat-deploy.yml"
+                }
             }
         }
         
