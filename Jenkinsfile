@@ -12,7 +12,7 @@ pipeline{
 
         stage('Nexus Upload'){
             steps{
-		        sh "mvn deploy"
+		       sh returnStatus: true, script: 'mvn deploy'
             }
         }
 
