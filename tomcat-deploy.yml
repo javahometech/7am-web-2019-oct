@@ -14,7 +14,7 @@
       maven_artifact:
         group_id: in.javahome
         artifact_id: webapp
-        repository_url: 'http://172.31.36.207:8081/repository/maven-releases/'
+        repository_url: 'http://52.66.184.149:8081/repository/maven-releases/'
         username: admin
         password: javahome
         dest: /opt/tomcat8/webapps/webapp.war
