@@ -18,7 +18,7 @@ pipeline{
 
         stage('Deploy Dev'){
             steps{
-		        sh "ansible-plybook -i dev.inv tomcat-deploy.yml"
+		        sh "ansible-playbook -i dev.inv tomcat-deploy.yml"
             }
         }
         
