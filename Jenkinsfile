@@ -7,8 +7,10 @@ pipeline{
     agent any
     stages{
         stage('Hello'){
-            echo "Your name is ${params.name}"
-            echo "Your location is ${params.locatioion}"
+            steps{
+                echo "Your name is ${params.name}"
+                echo "Your location is ${params.locatioion}"
+            }
         }
     }
 }
