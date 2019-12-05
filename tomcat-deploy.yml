@@ -1,6 +1,10 @@
 ---
 - hosts: tomcat
   tasks:
+    - name: install pip
+      yum:
+        name: python-pip
+        state: present
     - name: install lxml
       pip:
         name: lxml
