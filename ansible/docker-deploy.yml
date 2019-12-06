@@ -2,10 +2,10 @@
     - hosts: tomcat
       become: true
       vars:
-        - nexus_repo: dummy
+        - nexus_url: dummy
         - user: admin
         - password: dummy
-        - docker_image: dummy
+        - docker_repo: dummy
       tasks:
         - name: install pip
           yum:
@@ -24,8 +24,8 @@
             src: daemon.json
             dest: /etc/docker/daemon.json
         - name: Connet to nexus
-            command: "docker login {{nexus_repo}} -u {{user}} -p {{password}}"
+            command: "docker login {{nexus_url}} -u {{user}} -p {{password}}"
         - name: run docker container
           docker_container:
             name: javahome
-            image: "{{docker_image}}"
+            image: "{{docker_repo}}"

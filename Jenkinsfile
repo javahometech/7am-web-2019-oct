@@ -27,5 +27,23 @@ pipeline{
                 sh "docker push ${dockerRepo}:${currentBuild.id}"
             }
         }
+
+        stage('Docker Run'){
+            steps{
+                dir('ansible'){
+                    withCredentials([string(credentialsId: 'nexus', variable: 'nexusPwd')]) {
+                    sh """
+                        ansible-playbook docker-deploy.yml \
+                        -e nexus_url=${nexusUrl} \
+                        -e docker_repo=${dockerRepo} \
+                        -e user=admin \
+                        -e password=${nexusPwd}
+                    """
+                    }
+
+                }
+                
+            }
+        }
     }
 }
