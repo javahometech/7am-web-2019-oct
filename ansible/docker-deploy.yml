@@ -24,7 +24,7 @@
             src: daemon.json
             dest: /etc/docker/daemon.json
         - name: Connet to nexus
-            command: "docker login {{nexus_url}} -u {{user}} -p {{password}}"
+          command: "docker login {{nexus_url}} -u {{user}} -p {{password}}"
         - name: run docker container
           docker_container:
             name: javahome
