@@ -20,7 +20,10 @@ pipeline{
 
         stage('Docker Push'){
             steps{
-                sh "docker login ${nexusUrl} -u admin -p javahome"
+                withCredentials([string(credentialsId: 'nexus', variable: 'nexusPwd')]) {
+                    sh "docker login ${nexusUrl} -u admin -p ${nexusPwd}"
+                }
+                
                 sh "docker push ${dockerRepo}:${currentBuild.id}"
             }
         }
