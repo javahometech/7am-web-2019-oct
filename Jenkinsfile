@@ -1,3 +1,5 @@
+def nexusUrl = "172.31.36.207:8083"
+def dockerRepo = "172.31.36.207:8083/javahome"
 pipeline{
     agent any
     environment {
@@ -12,14 +14,14 @@ pipeline{
 
         stage('Docker Build'){
             steps{
-                sh "docker build -t 172.31.36.207:8083/javahome:${currentBuild.id} ."
+                sh "docker build -t ${dockerRepo}:${currentBuild.id} ."
             }
         }
 
         stage('Docker Push'){
             steps{
-                sh "docker login 172.31.36.207:8083 -u admin -p javahome"
-                sh "docker push 172.31.36.207:8083/javahome:${currentBuild.id}"
+                sh "docker login ${nexusUrl} -u admin -p javahome"
+                sh "docker push ${dockerRepo}:${currentBuild.id}"
             }
         }
     }
