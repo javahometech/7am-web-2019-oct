@@ -34,6 +34,7 @@ pipeline{
                     withCredentials([string(credentialsId: 'nexus', variable: 'nexusPwd')]) {
                     sh """
                         ansible-playbook docker-deploy.yml \
+                        -i dev.inv \
                         -e nexus_url=${nexusUrl} \
                         -e docker_repo=${dockerRepo} \
                         -e user=admin \
