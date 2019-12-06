@@ -23,9 +23,16 @@
           copy:
             src: daemon.json
             dest: /etc/docker/daemon.json
+          notify:
+            - restart docker
         - name: Connet to nexus
           command: "docker login {{nexus_url}} -u {{user}} -p {{password}}"
         - name: run docker container
           docker_container:
             name: javahome
             image: "{{docker_repo}}"
+      handlers:
+        - name: restart docker
+          service:
+            name: docker
+            state: restarted
