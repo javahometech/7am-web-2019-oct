@@ -14,7 +14,7 @@ pipeline{
 
         stage('Docker Build'){
             steps{
-                sh "docker build -t ${dockerRepo}:${currentBuild.id} ."
+                sh "docker build . -t ${dockerRepo}:${getLatestCommitId()} "
             }
         }
 
@@ -24,7 +24,7 @@ pipeline{
                     sh "docker login ${nexusUrl} -u admin -p ${nexusPwd}"
                 }
                 
-                sh "docker push ${dockerRepo}:${currentBuild.id}"
+                sh "docker push ${dockerRepo}:${getLatestCommitId()}"
             }
         }
 
@@ -34,11 +34,12 @@ pipeline{
                     withCredentials([string(credentialsId: 'nexus', variable: 'nexusPwd')]) {
                     sh """
                         ansible-playbook docker-deploy.yml \
+                        -e user=admin \
+                        -e password=${nexusPwd} \
                         -i dev.inv \
                         -e nexus_url=${nexusUrl} \
-                        -e docker_repo=${dockerRepo} \
-                        -e user=admin \
-                        -e password=${nexusPwd}
+                        -e docker_repo=${dockerRepo}:${getLatestCommitId()} 
+                        
                     """
                     }
 
@@ -47,4 +48,9 @@ pipeline{
             }
         }
     }
+}
+
+def getLatestCommitId(){
+    def commitId = sh returnStdout: true, script: 'git rev-parse HEAD'
+    return commitId
 }

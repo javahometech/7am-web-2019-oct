@@ -19,6 +19,10 @@
           yum:
             name: docker
             state: present
+        - name: enable docker 
+          service:
+            name: docker
+            enabled: yes
         - name: config daemon.json
           copy:
             src: daemon.json
@@ -31,6 +35,8 @@
           docker_container:
             name: javahome
             image: "{{docker_repo}}"
+            ports:
+              - "9090:8080"
       handlers:
         - name: restart docker
           service:
