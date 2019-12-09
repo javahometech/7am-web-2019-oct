@@ -19,6 +19,10 @@
           yum:
             name: docker
             state: present
+        - name: enable docker 
+          service:
+            name: docker
+            enable: yes
         - name: config daemon.json
           copy:
             src: daemon.json

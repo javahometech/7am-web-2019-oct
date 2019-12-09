@@ -36,7 +36,7 @@ pipeline{
                         ansible-playbook docker-deploy.yml \
                         -i dev.inv \
                         -e nexus_url=${nexusUrl} \
-                        -e docker_repo=${dockerRepo} \
+                        -e docker_repo=${dockerRepo}:${currentBuild.id} \
                         -e user=admin \
                         -e password=${nexusPwd}
                     """
