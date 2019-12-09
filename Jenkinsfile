@@ -1,15 +1,49 @@
+def nexusUrl = "172.31.36.207:8083"
+def dockerRepo = "172.31.36.207:8083/javahome"
 pipeline{
-    parameters {
-        string defaultValue: 'Hari', description: 'Choose name', name: 'name', trim: false
-        choice choices: ['Banglore', 'Pune', 'Delhi', 'Noida'], description: 'Choose your location', name: 'locatioion'
-    }
-
     agent any
+    environment {
+        PATH = "${PATH}:${tool name: 'maven3', type: 'maven'}/bin"
+    }
     stages{
-        stage('Hello'){
+        stage('Maven Build'){
             steps{
-                echo "Your name is ${params.name}"
-                echo "Your location is ${params.locatioion}"
+		        sh "mvn clean package"
+            }
+        }
+
+        stage('Docker Build'){
+            steps{
+                sh "docker build -t ${dockerRepo}:${currentBuild.id} ."
+            }
+        }
+
+        stage('Docker Push'){
+            steps{
+                withCredentials([string(credentialsId: 'nexus', variable: 'nexusPwd')]) {
+                    sh "docker login ${nexusUrl} -u admin -p ${nexusPwd}"
+                }
+                
+                sh "docker push ${dockerRepo}:${currentBuild.id}"
+            }
+        }
+
+        stage('Docker Run'){
+            steps{
+                dir('ansible'){
+                    withCredentials([string(credentialsId: 'nexus', variable: 'nexusPwd')]) {
+                    sh """
+                        ansible-playbook docker-deploy.yml \
+                        -i dev.inv \
+                        -e nexus_url=${nexusUrl} \
+                        -e docker_repo=${dockerRepo} \
+                        -e user=admin \
+                        -e password=${nexusPwd}
+                    """
+                    }
+
+                }
+                
             }
         }
     }

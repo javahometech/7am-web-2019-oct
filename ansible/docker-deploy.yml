@@ -1,0 +1,38 @@
+---
+    - hosts: tomcat
+      become: true
+      vars:
+        - nexus_url: dummy
+        - user: admin
+        - password: dummy
+        - docker_repo: dummy
+      tasks:
+        - name: install pip
+          yum:
+            name: python-pip
+            state: present
+        - name: install docker-py
+          pip:
+            name: docker-py
+            state: present
+        - name: Install docker 
+          yum:
+            name: docker
+            state: present
+        - name: config daemon.json
+          copy:
+            src: daemon.json
+            dest: /etc/docker/daemon.json
+          notify:
+            - restart docker
+        - name: Connet to nexus
+          command: "docker login {{nexus_url}} -u {{user}} -p {{password}}"
+        - name: run docker container
+          docker_container:
+            name: javahome
+            image: "{{docker_repo}}"
+      handlers:
+        - name: restart docker
+          service:
+            name: docker
+            state: restarted
