@@ -35,6 +35,8 @@
           docker_container:
             name: javahome
             image: "{{docker_repo}}"
+            ports:
+              - "9090:8080"
       handlers:
         - name: restart docker
           service:
